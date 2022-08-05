@@ -11,10 +11,11 @@ import (
 
 // installCmd represents the install command
 var installCmd = &cobra.Command{
-	Use:     "install",
+	Use:     "install [package]",
 	Aliases: []string{"hello", "add", "get"},
-	Short:   "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
+	Args:    cobra.ExactArgs(1),
+	Short:   "[TODO] A brief description of your command",
+	Long: `[TODO] A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
 Cobra is a CLI library for Go that empowers applications.
