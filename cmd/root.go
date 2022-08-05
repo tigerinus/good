@@ -22,15 +22,15 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/adrg/xdg"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+// var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -63,7 +63,8 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.good.toml)")
+	// configFilepath := filepath.Join(xdg.ConfigHome, "good.toml")
+	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is "+configFilepath+")")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -72,20 +73,26 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		// Search config in home directory with name ".good" (without extension).
-		viper.AddConfigPath(xdg.ConfigHome)
-		viper.SetConfigType("toml")
-		viper.SetConfigName("good")
-	}
+	// if cfgFile != "" {
+	// 	// Use config file from the flag.
+	// 	viper.SetConfigFile(cfgFile)
+	// } else {
+	// 	viper.AddConfigPath(xdg.ConfigHome)
+	// 	viper.SetConfigType("toml")
+	// 	viper.SetConfigName("good")
+	// }
 
+	viper.SetDefault(configKeyInstallRootPath, filepath.Join(xdg.DataHome, "good"))
+
+	viper.SetEnvPrefix("good")
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
-	}
+	// if err := viper.ReadInConfig(); err == nil {
+	// 	fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+	// } else {
+	// 	if err := viper.SafeWriteConfig(); err != nil {
+	// 		fmt.Fprintln(os.Stderr, "Error writing config file:", err)
+	// 	}
+	// }
 }
