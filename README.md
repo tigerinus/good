@@ -25,6 +25,12 @@ Flags:
 Use "good [command] --help" for more information about a command.
 ```
 
+## Installation
+
+```bash
+go install github.com/tigerinus/good
+```
+
 ## Contributing
 
 This tool is still at its very early stage. Issues and Pull Requests are definitely welcome!
