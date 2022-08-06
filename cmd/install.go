@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -29,18 +30,50 @@ to quickly create a Cobra application.`,
 		packageName := args[0]
 		installPath, err := createPackageInstallPath(packageName)
 		if err != nil {
-			fmt.Println(err)
+			_logger.Error(err.Error())
 			os.RemoveAll(installPath)
 			os.Exit(1)
 		}
 
 		execCmd := exec.Command("go", "install", packageName)
 		execCmd.Env = append(os.Environ(), fmt.Sprintf("GOPATH=%s", installPath))
+		execCmd.Stdout = os.Stdout
+		execCmd.Stderr = os.Stderr
 
+		_logger.Info("good: installing to %s...\n", installPath)
 		if err := execCmd.Run(); err != nil {
-			fmt.Println(err)
+			_logger.Error(err.Error())
 			os.RemoveAll(installPath)
 			os.Exit(1)
+		}
+
+		binPath := filepath.Join(installPath, "bin")
+		items, err := ioutil.ReadDir(binPath)
+		if err != nil {
+			_logger.Error(err.Error())
+			os.RemoveAll(installPath)
+			os.Exit(1)
+		}
+
+		targetPath := viper.GetString(configKeyLocalBinPath)
+		for _, item := range items {
+			if item.IsDir() {
+				continue
+			}
+
+			targetFile := filepath.Join(targetPath, item.Name())
+
+			if _, err := os.Stat(targetFile); err == nil {
+				if err := os.Remove(targetFile); err != nil {
+					_logger.Debug(err.Error())
+				}
+			}
+
+			if err := os.Symlink(filepath.Join(binPath, item.Name()), targetFile); err != nil {
+				_logger.Error(err.Error())
+				os.RemoveAll(installPath)
+				os.Exit(1)
+			}
 		}
 	},
 }

@@ -21,7 +21,28 @@ THE SOFTWARE.
 */
 package main
 
-import "github.com/tigerinus/good/cmd"
+import (
+	"os"
+	"runtime"
+
+	"github.com/tigerinus/good/cmd"
+)
+
+var _logger *cmd.Logger
+
+func init() {
+	_logger = cmd.NewLogger()
+
+	if runtime.GOOS == "windows" {
+		_logger.Info("Windows is not supported yet.")
+		os.Exit(1)
+	}
+
+	if os.Getuid() == 0 {
+		_logger.Info("Running as root is not supported yet.")
+		os.Exit(1)
+	}
+}
 
 func main() {
 	cmd.Execute()

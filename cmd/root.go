@@ -31,6 +31,7 @@ import (
 )
 
 // var cfgFile string
+var _logger *Logger
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -57,6 +58,8 @@ func Execute() {
 }
 
 func init() {
+	_logger = NewLogger()
+
 	cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.
@@ -65,6 +68,7 @@ func init() {
 
 	// configFilepath := filepath.Join(xdg.ConfigHome, "good.toml")
 	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is "+configFilepath+")")
+	rootCmd.PersistentFlags().BoolVarP(&_logger.DebugMode, "debug", "d", false, "debug mode")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -83,6 +87,7 @@ func initConfig() {
 	// }
 
 	viper.SetDefault(configKeyInstallRootPath, filepath.Join(xdg.DataHome, "good"))
+	viper.SetDefault(configKeyLocalBinPath, filepath.Join(xdg.Home, ".local", "bin"))
 
 	viper.SetEnvPrefix("good")
 	viper.AutomaticEnv() // read in environment variables that match
