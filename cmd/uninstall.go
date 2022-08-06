@@ -17,13 +17,7 @@ import (
 var uninstallCmd = &cobra.Command{
 	Use:     "uninstall",
 	Aliases: []string{"bye", "remove", "delete"},
-	Short:   "[TODO] A brief description of your command",
-	Long: `[TODO] A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short:   "Uninstall a package named by its import path",
 	Run: func(cmd *cobra.Command, args []string) {
 		packageName := args[0]
 

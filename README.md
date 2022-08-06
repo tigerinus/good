@@ -1,2 +1,3 @@
 # good
-Install and uninstall Go app in isolated path
+
+Install and uninstall a Go package at an isolated path

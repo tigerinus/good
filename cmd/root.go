@@ -36,13 +36,10 @@ var _logger *Logger
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "good",
-	Short: "[TODO] A brief description of your application",
-	Long: `[TODO] A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Install and uninstall a Go package to an isolated path",
+	Long: `A tool for installing a Go package to an isolated path, to keep the global GOPATH
+clean. Because of isolated path, uninstalling is also possible.
+`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
