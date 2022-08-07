@@ -11,6 +11,9 @@ This tool is greatly inspired by [`pipx`](https://github.com/pypa/pipx).
 > Thanks [DALL-e](https://openai.com/dall-e-2/) for the logo.
 
 ```text
+A tool for installing a Go package to an isolated path, to keep the global GOPATH
+clean. Because of isolated path, uninstalling is also possible.
+
 Usage:
   good [command]
 
@@ -18,7 +21,9 @@ Available Commands:
   completion  Generate the autocompletion script for the specified shell
   help        Help about any command
   install     Install a package named by its import path
+  list        List all installed packages
   uninstall   Uninstall a package named by its import path
+  version     Show version
 
 Flags:
   -d, --debug   debug mode
