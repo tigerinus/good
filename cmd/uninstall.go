@@ -55,24 +55,24 @@ var uninstallCmd = &cobra.Command{
 		if err := filepath.WalkDir(installPath, func(path string, d fs.DirEntry, err error) error {
 			if err != nil {
 				_logger.Debug(err.Error())
-				return err
+				return filepath.SkipDir
 			}
 
 			if d.IsDir() {
 				_logger.Debug("good: changing permission of %s to 0700...", path)
 				if err := os.Chmod(path, 0o700); err != nil {
 					_logger.Debug(err.Error())
-					return err
+					return nil // continue
 				}
 			} else {
 				_logger.Debug("good: changing permission of %s to 0600...", path)
 				if err := os.Chmod(path, 0o600); err != nil {
 					_logger.Debug(err.Error())
-					return err
+					return nil // continue
 				}
 			}
 
-			return nil
+			return nil // continue
 		}); err != nil {
 			_logger.Debug(err.Error())
 		}

@@ -5,8 +5,13 @@ package cmd
 
 import (
 	"fmt"
+	"io/fs"
+	"io/ioutil"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"github.com/tigerinus/good/common"
 )
 
 // listCmd represents the list command
@@ -14,7 +19,29 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List all installed packages",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("list called")
+		installRootPath := filepath.Join(viper.GetString(common.ConfigKeyInstallRootPath))
+
+		if err := filepath.WalkDir(installRootPath, func(path string, d fs.DirEntry, err error) error {
+			if err != nil {
+				_logger.Debug(err.Error())
+				return filepath.SkipDir
+			}
+
+			if !d.IsDir() && filepath.Base(path) == common.ManifestFileName {
+				content, err := ioutil.ReadFile(path)
+				if err != nil {
+					_logger.Debug(err.Error())
+					return filepath.SkipDir
+				}
+
+				fmt.Println(string(content))
+				return nil // continue
+			}
+
+			return nil // continue
+		}); err != nil {
+			_logger.Debug(err.Error())
+		}
 	},
 }
 

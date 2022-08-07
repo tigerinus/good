@@ -91,14 +91,15 @@ func init() {
 func createPackageInstallPath(packageName string) (string, error) {
 	installPath := filepath.Join(viper.GetString(common.ConfigKeyInstallRootPath), packageName)
 
+	_logger.Debug("good: creating install path %s...", installPath)
 	if err := os.MkdirAll(installPath, 0o755); err != nil {
 		return "", err
 	}
 
-	// create a file under installPath
+	// create manifest file under installPath
 	manifestFilepath := filepath.Join(installPath, common.ManifestFileName)
-	_, err := os.Create(manifestFilepath)
-	if err != nil {
+	_logger.Debug("good: creating manifest file %s...", manifestFilepath)
+	if err := ioutil.WriteFile(manifestFilepath, []byte(packageName), 0o600); err != nil {
 		return "", err
 	}
 
