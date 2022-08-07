@@ -11,6 +11,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/tigerinus/good/common"
 )
 
 // uninstallCmd represents the uninstall command
@@ -21,7 +22,7 @@ var uninstallCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		packageName := args[0]
 
-		installPath := filepath.Join(viper.GetString(configKeyInstallRootPath), packageName)
+		installPath := filepath.Join(viper.GetString(common.ConfigKeyInstallRootPath), packageName)
 
 		_logger.Info("good: uninstalling %s...", packageName)
 
@@ -32,7 +33,7 @@ var uninstallCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		targetPath := viper.GetString(configKeyLocalBinPath)
+		targetPath := viper.GetString(common.ConfigKeyLocalBinPath)
 		for _, item := range items {
 			if item.IsDir() {
 				continue
@@ -54,24 +55,24 @@ var uninstallCmd = &cobra.Command{
 		if err := filepath.WalkDir(installPath, func(path string, d fs.DirEntry, err error) error {
 			if err != nil {
 				_logger.Debug(err.Error())
-				return err
+				return filepath.SkipDir
 			}
 
 			if d.IsDir() {
 				_logger.Debug("good: changing permission of %s to 0700...", path)
 				if err := os.Chmod(path, 0o700); err != nil {
 					_logger.Debug(err.Error())
-					return err
+					return nil // continue
 				}
 			} else {
 				_logger.Debug("good: changing permission of %s to 0600...", path)
 				if err := os.Chmod(path, 0o600); err != nil {
 					_logger.Debug(err.Error())
-					return err
+					return nil // continue
 				}
 			}
 
-			return nil
+			return nil // continue
 		}); err != nil {
 			_logger.Debug(err.Error())
 		}

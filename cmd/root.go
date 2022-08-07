@@ -28,10 +28,11 @@ import (
 	"github.com/adrg/xdg"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/tigerinus/good/common"
 )
 
 // var cfgFile string
-var _logger *Logger
+var _logger *common.Logger
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -55,7 +56,7 @@ func Execute() {
 }
 
 func init() {
-	_logger = NewLogger()
+	_logger = common.NewLogger()
 
 	cobra.OnInitialize(initConfig)
 
@@ -83,8 +84,8 @@ func initConfig() {
 	// 	viper.SetConfigName("good")
 	// }
 
-	viper.SetDefault(configKeyInstallRootPath, filepath.Join(xdg.DataHome, "good"))
-	viper.SetDefault(configKeyLocalBinPath, filepath.Join(xdg.Home, ".local", "bin"))
+	viper.SetDefault(common.ConfigKeyInstallRootPath, filepath.Join(xdg.DataHome, "good"))
+	viper.SetDefault(common.ConfigKeyLocalBinPath, filepath.Join(xdg.Home, ".local", "bin"))
 
 	viper.SetEnvPrefix("good")
 	viper.AutomaticEnv() // read in environment variables that match
