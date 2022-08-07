@@ -1,5 +1,7 @@
 # 👍 good
 
+[![goreleaser](https://github.com/tigerinus/good/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/tigerinus/good/actions/workflows/release.yml)
+
 A tool for installing a Go package to an isolated path, to keep the global GOPATH
 clean. Because of isolated path, uninstalling is also possible.
 
