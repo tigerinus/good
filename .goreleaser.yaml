@@ -15,15 +15,23 @@ builds:
       - arm64
       - arm
     goarm:
-      - 6
       - 7
 checksum:
   name_template: 'checksums.txt'
 snapshot:
-  name_template: "{{ incpatch .Version }}-next"
+  name_template: "{{ incpatch .Version }}-snapshot"
 changelog:
   sort: asc
   filters:
     exclude:
       - '^docs:'
       - '^test:'
+release:
+  github:
+    owner: tigerinus
+    name: good
+  draft: true
+  prerelease: auto
+  mode: replace
+
+  
