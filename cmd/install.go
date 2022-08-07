@@ -12,6 +12,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/tigerinus/good/common"
 )
 
 // installCmd represents the install command
@@ -33,6 +34,7 @@ var installCmd = &cobra.Command{
 		execCmd.Env = append(os.Environ(), fmt.Sprintf("GOPATH=%s", installPath))
 		execCmd.Stdout = os.Stdout
 		execCmd.Stderr = os.Stderr
+		execCmd.Dir = os.TempDir()
 
 		_logger.Info("good: installing to %s...\n", installPath)
 		if err := execCmd.Run(); err != nil {
@@ -49,7 +51,7 @@ var installCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		targetPath := viper.GetString(configKeyLocalBinPath)
+		targetPath := viper.GetString(common.ConfigKeyLocalBinPath)
 		for _, item := range items {
 			if item.IsDir() {
 				continue
@@ -87,9 +89,16 @@ func init() {
 }
 
 func createPackageInstallPath(packageName string) (string, error) {
-	installPath := filepath.Join(viper.GetString(configKeyInstallRootPath), packageName)
+	installPath := filepath.Join(viper.GetString(common.ConfigKeyInstallRootPath), packageName)
 
 	if err := os.MkdirAll(installPath, 0o755); err != nil {
+		return "", err
+	}
+
+	// create a file under installPath
+	manifestFilepath := filepath.Join(installPath, common.ManifestFileName)
+	_, err := os.Create(manifestFilepath)
+	if err != nil {
 		return "", err
 	}
 

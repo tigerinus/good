@@ -26,12 +26,13 @@ import (
 	"runtime"
 
 	"github.com/tigerinus/good/cmd"
+	"github.com/tigerinus/good/common"
 )
 
-var _logger *cmd.Logger
+var _logger *common.Logger
 
 func init() {
-	_logger = cmd.NewLogger()
+	_logger = common.NewLogger()
 
 	if runtime.GOOS == "windows" {
 		_logger.Info("Windows is not supported yet.")

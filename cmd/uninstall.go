@@ -11,6 +11,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/tigerinus/good/common"
 )
 
 // uninstallCmd represents the uninstall command
@@ -21,7 +22,7 @@ var uninstallCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		packageName := args[0]
 
-		installPath := filepath.Join(viper.GetString(configKeyInstallRootPath), packageName)
+		installPath := filepath.Join(viper.GetString(common.ConfigKeyInstallRootPath), packageName)
 
 		_logger.Info("good: uninstalling %s...", packageName)
 
@@ -32,7 +33,7 @@ var uninstallCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		targetPath := viper.GetString(configKeyLocalBinPath)
+		targetPath := viper.GetString(common.ConfigKeyLocalBinPath)
 		for _, item := range items {
 			if item.IsDir() {
 				continue
