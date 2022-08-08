@@ -1,3 +1,5 @@
+//go:build aix || linux || darwin || dragonfly || freebsd || openbsd || netbsd || solaris
+
 /*
 Copyright © 2022 Tiger Wang <tiger@tensorsmart.com>
 
@@ -19,11 +21,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+
 package main
 
 import (
 	"os"
-	"runtime"
 
 	"github.com/tigerinus/good/cmd"
 	"github.com/tigerinus/good/common"
@@ -33,11 +35,6 @@ var _logger *common.Logger
 
 func init() {
 	_logger = common.NewLogger()
-
-	if runtime.GOOS == "windows" {
-		_logger.Info("Windows is not supported yet.")
-		os.Exit(1)
-	}
 
 	if os.Getuid() == 0 {
 		_logger.Info("Running as root is not supported yet.")
