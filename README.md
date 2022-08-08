@@ -22,6 +22,7 @@ This tool is greatly inspired by [`pipx`](https://github.com/pypa/pipx).
 - Install CLI Go apps in an isolated path, without changing anything under `$GOPATH` or `go.mod`/`go.sum` files (if under a Go project).
 - Uninstall the app in one command without leaving any files behind.
 - List all CLI go apps installed
+- *(UPCOMING)* Check for outdated CLI go apps among the installed.
 - *(UPCOMING)* Strip the binary after as part of installation.
 - *(UPCOMING)* Show information about a CLI go app.
 - *(UPCOMING)* Run a CLI app once and uninstall.
