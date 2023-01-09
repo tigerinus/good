@@ -18,3 +18,5 @@
 target/
 good
 dist/
+
+coverage.txt

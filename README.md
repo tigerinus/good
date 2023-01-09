@@ -2,6 +2,7 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/tigerinus/good.svg)](https://pkg.go.dev/github.com/tigerinus/good) [![Go Report Card](https://goreportcard.com/badge/github.com/tigerinus/good)](https://goreportcard.com/report/github.com/tigerinus/good) [![goreleaser](https://github.com/tigerinus/good/actions/workflows/release.yml/badge.svg)](https://github.com/tigerinus/good/actions/workflows/release.yml)
 [![trackgit](https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/l7hsje3kyhl6a0thk5dl)](https://dashboard.trackgit.com/token/l7hsje3kyhl6a0thk5dl)
+[![codecov](https://codecov.io/gh/tigerinus/good/branch/main/graph/badge.svg?token=PX4PGVR3QC)](https://codecov.io/gh/tigerinus/good)
 
 A tool for installing a Go package to an isolated path, to keep the global GOPATH
 clean. Because of isolated path, uninstalling is also possible.
