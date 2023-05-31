@@ -4,10 +4,8 @@ Copyright © 2022 Tiger Wang <tiger@tensorsmart.com>
 package cmd
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
-	"os/exec"
 	"path/filepath"
 
 	"github.com/spf13/cobra"
@@ -30,11 +28,20 @@ var installCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		execCmd := exec.Command("go", "install", packageName)
-		execCmd.Env = append(os.Environ(), fmt.Sprintf("GOPATH=%s", installPath))
-		execCmd.Stdout = os.Stdout
-		execCmd.Stderr = os.Stderr
-		execCmd.Dir = os.TempDir()
+		execCmd := common.GoInstallCmd(packageName, installPath)
+
+		defer func() {
+			if _, err := os.Stat(installPath); err != nil {
+				return
+			}
+
+			_logger.Info("good: cleaning up mod cache at %s...\n", installPath)
+
+			execCmd = common.GoCleanModCacheCmd(installPath)
+			if err := execCmd.Run(); err != nil {
+				_logger.Debug(err.Error())
+			}
+		}()
 
 		_logger.Info("good: installing to %s...\n", installPath)
 		if err := execCmd.Run(); err != nil {
